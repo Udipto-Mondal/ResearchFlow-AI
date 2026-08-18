@@ -1,3 +1,25 @@
+# Pydantic v1 compatibility patch for ChromaDB on modern Python runtimes (Python 3.12 - 3.14)
+try:
+    import typing
+    import pydantic.v1.fields as _pv1_fields
+    _orig_set_default_and_type = _pv1_fields.ModelField._set_default_and_type
+
+    def _patched_set_default_and_type(self):
+        if getattr(self, 'type_', None) is _pv1_fields.Undefined:
+            self.type_ = typing.Any
+            self.annotation = typing.Any
+        try:
+            _orig_set_default_and_type(self)
+        except Exception:
+            self.type_ = typing.Any
+            self.annotation = typing.Any
+            if not hasattr(self, 'outer_type_'):
+                self.outer_type_ = typing.Any
+
+    _pv1_fields.ModelField._set_default_and_type = _patched_set_default_and_type
+except Exception:
+    pass
+
 import streamlit as st
 import datetime
 from crew import generate_report
