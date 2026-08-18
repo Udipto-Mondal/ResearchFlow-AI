@@ -26,7 +26,7 @@ researcher = Agent(
     verbose=True,
     allow_delegation=False,
     tools=[search_tool],
-    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-1.5-flash"),
+    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
     max_rpm=10
 )
 
@@ -39,7 +39,7 @@ analyst = Agent(
     of the report.''',
     verbose=True,
     allow_delegation=False,
-    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-1.5-flash"),
+    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
     max_rpm=10
 )
 
@@ -52,7 +52,7 @@ writer = Agent(
     but packed with value.''',
     verbose=True,
     allow_delegation=False,
-    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-1.5-flash"),
+    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
     max_rpm=10
 )
 
@@ -65,6 +65,6 @@ editor = Agent(
     verify that the final document is ready for professional publishing.''',
     verbose=True,
     allow_delegation=False,
-    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-1.5-flash"),
+    llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
     max_rpm=10
 )
