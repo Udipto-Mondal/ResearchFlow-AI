@@ -33,6 +33,7 @@ def generate_report(topic: str):
         agents=[researcher, analyst, writer, editor],
         tasks=[research_task, analyze_task, write_task, edit_task],
         process=Process.sequential, # Tasks will run one after another
+        max_rpm=3, # Strictly limit to 3 requests per minute to prevent 429 quota exhaustion
         verbose=True
     )
 

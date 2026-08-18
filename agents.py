@@ -27,7 +27,7 @@ researcher = Agent(
     allow_delegation=False,
     tools=[search_tool],
     llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
-    max_rpm=10
+    max_rpm=3
 )
 
 # 2. Information Strategist Agent
@@ -40,7 +40,7 @@ analyst = Agent(
     verbose=True,
     allow_delegation=False,
     llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
-    max_rpm=10
+    max_rpm=3
 )
 
 # 3. Technical Writer Agent
@@ -53,7 +53,7 @@ writer = Agent(
     verbose=True,
     allow_delegation=False,
     llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
-    max_rpm=10
+    max_rpm=3
 )
 
 # 4. Chief Editor Agent
@@ -66,5 +66,5 @@ editor = Agent(
     verbose=True,
     allow_delegation=False,
     llm=os.getenv("GEMINI_MODEL", "gemini/gemini-flash-latest"),
-    max_rpm=10
+    max_rpm=3
 )
