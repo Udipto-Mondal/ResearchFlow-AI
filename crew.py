@@ -27,6 +27,8 @@ from crewai import Crew, Process
 from agents import researcher, analyst, writer, editor
 from tasks import research_task, analyze_task, write_task, edit_task
 
+import time
+
 def generate_report(topic: str):
     # Create the Crew
     report_crew = Crew(
@@ -37,17 +39,27 @@ def generate_report(topic: str):
         verbose=True
     )
 
-    # Start the execution
-    print(f"Starting research on: {topic}...\n")
-    result = report_crew.kickoff(inputs={'topic': topic})
-    
-    # Save the output to a markdown file
-    output_filename = f"{topic.replace(' ', '_')}_Report.md"
-    with open(output_filename, "w", encoding="utf-8") as file:
-        file.write(result.raw if hasattr(result, 'raw') else str(result))
-        
-    print(f"\nReport generated and saved as {output_filename}")
-    return result
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"Starting research on: {topic} (Attempt {attempt}/{max_retries})...\n")
+            result = report_crew.kickoff(inputs={'topic': topic})
+            
+            # Save the output to a markdown file
+            output_filename = f"{topic.replace(' ', '_')}_Report.md"
+            with open(output_filename, "w", encoding="utf-8") as file:
+                file.write(result.raw if hasattr(result, 'raw') else str(result))
+                
+            print(f"\nReport generated and saved as {output_filename}")
+            return result
+        except Exception as e:
+            err_msg = str(e)
+            if ("503" in err_msg or "429" in err_msg or "UNAVAILABLE" in err_msg) and attempt < max_retries:
+                wait_time = 10 * attempt
+                print(f"Temporary server load / rate limit detected ({err_msg}). Automatically retrying in {wait_time}s...")
+                time.sleep(wait_time)
+                continue
+            raise e
 
 if __name__ == "__main__":
     print("Welcome to ResearchFlow AI")
